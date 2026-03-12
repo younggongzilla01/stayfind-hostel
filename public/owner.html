@@ -365,14 +365,32 @@
                     <option>Jaipur</option><option>Kolkata</option>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Area / Locality *</label>
-                  <input type="text" class="form-input" id="w-area" placeholder="e.g. Koramangala" />
-                </div>
+              <div class="form-group">
+                <label class="form-label">Area / Locality *</label>
+                <input type="text" class="form-input" id="w-area" placeholder="e.g. Koramangala" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Full Address *</label>
+                <textarea class="form-textarea" id="w-address" placeholder="Building name, street, locality..." style="min-height:50px"></textarea>
               </div>
               <div class="form-group">
-                <label class="form-label">Full Address</label>
-                <textarea class="form-textarea" id="w-address" placeholder="Building name, street, locality, city – PIN" style="min-height:80px"></textarea>
+                <label class="form-label">PIN Code *</label>
+                <input type="text" class="form-input" id="w-pincode" placeholder="e.g. 400001" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Property Type *</label>
+                <select class="form-select" id="w-type">
+                  <option value="Building">Entire Building</option>
+                  <option value="1 BHK">1 BHK Apartment</option>
+                  <option value="2 BHK">2 BHK Apartment</option>
+                  <option value="3 BHK">3 BHK Apartment</option>
+                  <option value="4 BHK">4 BHK Apartment</option>
+                  <option value="RK">RK (Room Kitchen)</option>
+                </select>
               </div>
               <div class="form-group">
                 <label class="form-label">Gender Policy *</label>
@@ -430,27 +448,77 @@
 
             <!-- STEP 3: Facilities -->
             <div id="wizard-step-3" style="display:none">
-              <h3 style="font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:1.5rem">🛡️ Facilities & Amenities</h3>
-              <div class="form-group">
-                <label class="form-label">Select all that apply</label>
-                <div class="checkbox-group">
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-wifi" /><label for="fac-wifi">📶 WiFi</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-mess" /><label for="fac-mess">🍽️ Mess/Meals</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-ac" /><label for="fac-ac">🌡️ AC Rooms</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-laundry" /><label for="fac-laundry">🧺 Laundry</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-gym" /><label for="fac-gym">🏋️ Gym</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-parking" /><label for="fac-parking">🚗 Parking</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-cctv" /><label for="fac-cctv">📹 CCTV</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-hotwater" /><label for="fac-hotwater">🚿 Hot Water</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-study" /><label for="fac-study">📚 Study Room</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-cafe" /><label for="fac-cafe">☕ Café</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-cowork" /><label for="fac-cowork">💻 Co-Working</label></div>
-                  <div class="checkbox-chip"><input type="checkbox" id="fac-pool" /><label for="fac-pool">🏊 Pool Access</label></div>
+              <h3 style="font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:1.5rem">🛡️ Core Services & Facilities</h3>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Food Service</label>
+                  <select class="form-select" id="w-food-avl">
+                    <option value="No">Not Available</option>
+                    <option value="Yes">Available</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">If available, select meals:</label>
+                  <div style="display:flex;gap:10px;margin-top:0.5rem">
+                    <div class="checkbox-chip"><input type="checkbox" id="w-food-bf" value="Breakfast" /><label for="w-food-bf">Breakfast</label></div>
+                    <div class="checkbox-chip"><input type="checkbox" id="w-food-lun" value="Lunch" /><label for="w-food-lun">Lunch</label></div>
+                    <div class="checkbox-chip"><input type="checkbox" id="w-food-din" value="Dinner" /><label for="w-food-din">Dinner</label></div>
+                  </div>
                 </div>
               </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Water Supply & Usage</label>
+                  <select class="form-select" id="w-water">
+                    <option value="24/7">24/7 Supply</option>
+                    <option value="Timing">Restricted Timings</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Hot/Cold Water</label>
+                  <div style="display:flex;gap:10px;margin-top:0.5rem">
+                    <div class="checkbox-chip"><input type="checkbox" id="w-water-hot" value="Hot Water" /><label for="w-water-hot">Hot Water</label></div>
+                    <div class="checkbox-chip"><input type="checkbox" id="w-water-cold" value="Cold Water" /><label for="w-water-cold">Cold Water</label></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Select all Amenities</label>
+                <div class="checkbox-group">
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Drinking Water" id="fac2-drink"/><label for="fac2-drink">💧 Drinking Water</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Water Purifier (Filter)" id="fac2-pur"/><label for="fac2-pur">🚰 Water Purifier</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Fridge" id="fac2-fri"/><label for="fac2-fri">❄️ Fridge</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Washing Machine" id="fac2-wash"/><label for="fac2-wash">👕 Washing Machine</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Dining Area" id="fac2-din"/><label for="fac2-din">🍽️ Dining Area</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Kitchen" id="fac2-kit"/><label for="fac2-kit">🍳 Kitchen</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Study Area" id="fac2-std"/><label for="fac2-std">📚 Study Area</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Working Area" id="fac2-wrk"/><label for="fac2-wrk">💻 Working Area</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Lift / Elevator" id="fac2-lft"/><label for="fac2-lft">🛗 Lift</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Shower" id="fac2-shw"/><label for="fac2-shw">🚿 Shower</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Bed" id="fac2-bed"/><label for="fac2-bed">🛏️ Bed</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Cupboard (Separate)" id="fac2-cup"/><label for="fac2-cup">🗄️ Cupboard</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Locker" id="fac2-lck"/><label for="fac2-lck">🔒 Locker</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="CCTV" id="fac2-cctv"/><label for="fac2-cctv">📹 CCTV</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Security Guard" id="fac2-sec"/><label for="fac2-sec">👮 Guard</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Parking" id="fac2-prk"/><label for="fac2-prk">🚗 Parking</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Room Cleaning Service" id="fac2-rc"/><label for="fac2-rc">🧹 Room Cleaning</label></div>
+                  <div class="checkbox-chip"><input type="checkbox" class="fac-cb" value="Washroom Cleaning Service" id="fac2-wc"/><label for="fac2-wc">🧽 Washroom Cleaning</label></div>
+                </div>
+              </div>
+              
               <div class="form-group" style="margin-top:1.5rem">
-                <label class="form-label">House Rules</label>
-                <textarea class="form-textarea" id="w-rules" placeholder="No pets, gates close at 11 PM, no guests allowed..."></textarea>
+                <label class="form-label">Upload Photos</label>
+                <div style="border:2px dashed var(--border);border-radius:var(--radius);padding:2rem;text-align:center;color:var(--text-faint)">
+                    📷 Drag & drop photos here, or <span style="color:var(--primary);cursor:pointer">browse files</span>. (Mocked for Demo)
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top:1.5rem">
+                <label class="form-label">Extra Information & House Rules</label>
+                <textarea class="form-textarea" id="w-rules" placeholder="Any specific rules? E.g. Gates close at 11 PM, no guests allowed..."></textarea>
               </div>
               <div class="form-group">
                 <label class="form-label">Contact Phone</label>

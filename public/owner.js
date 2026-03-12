@@ -474,10 +474,11 @@ function renderReview() {
     const name = document.getElementById('w-name').value;
     const city = document.getElementById('w-city').value;
     const area = document.getElementById('w-area').value;
+    const type = document.getElementById('w-type').value;
     const gender = document.getElementById('w-gender').value;
     
     document.getElementById('review-preview').innerHTML = `
-        <div style="font-size:1.1rem; font-weight:700; color:var(--white); margin-bottom:0.75rem">${name}</div>
+        <div style="font-size:1.1rem; font-weight:700; color:var(--white); margin-bottom:0.75rem">${name} (${type})</div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; font-size:0.88rem">
             <div><span style="color:var(--text-faint)">Location:</span> ${area}, ${city}</div>
             <div><span style="color:var(--text-faint)">Gender:</span> ${gender}</div>
@@ -486,16 +487,45 @@ function renderReview() {
 }
 
 async function submitHostel() {
+    // Step 1 Info
     const name = document.getElementById('w-name').value;
     const city = document.getElementById('w-city').value;
     const area = document.getElementById('w-area').value;
+    const address = document.getElementById('w-address').value;
+    const pinCode = document.getElementById('w-pincode')?.value || '';
+    const propertyType = document.getElementById('w-type')?.value || 'Building';
     const gender = document.getElementById('w-gender').value;
+
+    // Step 3 Info
+    const foodAvl = document.getElementById('w-food-avl')?.value === 'Yes';
+    const meals = [];
+    if(document.getElementById('w-food-bf')?.checked) meals.push('Breakfast');
+    if(document.getElementById('w-food-lun')?.checked) meals.push('Lunch');
+    if(document.getElementById('w-food-din')?.checked) meals.push('Dinner');
+
+    const waterSupply = document.getElementById('w-water')?.value || '24/7';
+    const facilities = [];
+    if(document.getElementById('w-water-hot')?.checked) facilities.push('Hot Water');
+    if(document.getElementById('w-water-cold')?.checked) facilities.push('Cold Water');
+    
+    document.querySelectorAll('.fac-cb:checked').forEach(cb => {
+        facilities.push(cb.value);
+    });
+
+    const rules = document.getElementById('w-rules')?.value || '';
     
     // We would also gather rooms here, but skipping for brevity in this conversion setup
     // the backend model defaults rooms to []
 
     try {
-        const payload = { name, city, area, gender, status: "Pending", type: "mixed", rent: 5000 };
+        const payload = { 
+            name, city, area, address, pinCode, propertyType, gender,
+            food: { available: foodAvl, meals },
+            waterSupply,
+            facilities,
+            rules,
+            status: "Pending"
+        };
         const newHostel = await apiFetch('/owner/hostels', 'POST', payload);
         
         showToast("Listing submitted for review!", "success");

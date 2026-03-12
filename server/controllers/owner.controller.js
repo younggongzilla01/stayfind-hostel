@@ -18,14 +18,27 @@ const getMyHostels = async (req, res) => {
 // @route   POST /api/owner/hostels
 // @access  Private/Owner
 const createHostel = async (req, res) => {
-    const { name, city, area, gender, rent, type } = req.body;
+    const { 
+        name, city, area, address, pinCode, propertyType, gender, 
+        food, waterSupply, facilities, rules, extraInfo, photos 
+    } = req.body;
+    
     try {
         const newHostel = new Hostel({
             owner: req.user._id,
             name,
             city,
             area,
+            address,
+            pinCode,
+            propertyType,
             gender,
+            food,
+            waterSupply,
+            facilities,
+            rules,
+            extraInfo,
+            photos,
             status: 'Pending',
             rooms: [] // Owner will add rooms later or via Wizard
         });
