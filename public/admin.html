@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Portal — StayFind Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="portal.css" />
+</head>
+<body class="admin-portal">
+
+<!-- ========== ADMIN AUTH SCREEN ========== -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo"><span class="logo-icon">🛡️</span><span class="logo-text">StayAdmin</span></div>
+    <h1 class="auth-title">Management Login</h1>
+    <p class="auth-subtitle">Welcome back. Please authenticate to access the master dashboard.</p>
+    
+    <div class="form-group">
+      <label class="form-label">Admin ID</label>
+      <input type="text" class="form-input" id="admin-id" placeholder="ADM-001" value="admin123" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Secure PIN</label>
+      <input type="password" class="form-input" id="admin-pin" placeholder="••••" value="1234" />
+    </div>
+    <button class="btn btn-primary btn-lg btn-full" onclick="adminLogin()">Authenticate →</button>
+  </div>
+</div>
+
+<!-- ========== PORTAL ========== -->
+<div id="portal-app" class="portal-wrapper" style="display:none">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-icon">🛡️</span>
+        <span class="logo-text">StayAdmin</span>
+      </div>
+      <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" style="background:var(--accent)">A</div>
+      <div class="sidebar-user-info">
+        <strong>Master Admin</strong>
+        <span>System Superuser</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Oversight</div>
+      <a class="nav-item active" onclick="showPage('overview')" id="nav-overview">
+        <span class="nav-icon">📊</span><span class="nav-label">Overview</span>
+      </a>
+      <a class="nav-item" onclick="showPage('approvals')" id="nav-approvals">
+        <span class="nav-icon">⚖️</span><span class="nav-label">Approvals</span>
+        <span class="nav-badge" id="approval-badge">2</span>
+      </a>
+      <div class="nav-section-label">Management</div>
+      <a class="nav-item" onclick="showPage('all-hostels')" id="nav-all-hostels">
+        <span class="nav-icon">🏢</span><span class="nav-label">All Hostels</span>
+      </a>
+      <a class="nav-item" onclick="showPage('all-tenants')" id="nav-all-tenants">
+        <span class="nav-icon">👥</span><span class="nav-label">Master Residents</span>
+      </a>
+      <a class="nav-item" onclick="showPage('complaints')" id="nav-complaints">
+        <span class="nav-icon">🚩</span><span class="nav-label">Complaints</span>
+      </a>
+      <div class="nav-section-label">System</div>
+      <a class="nav-item" onclick="showPage('platform-fee')" id="nav-platform-fee">
+        <span class="nav-icon">💳</span><span class="nav-label">Platform Fees</span>
+      </a>
+      <a class="nav-item" onclick="showPage('audit-logs')" id="nav-audit-logs">
+        <span class="nav-icon">📃</span><span class="nav-label">Audit Logs</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <a class="sidebar-footer-btn" href="index.html">
+        <span>🌐</span><span>Site Public</span>
+      </a>
+      <div class="sidebar-footer-btn danger" onclick="adminLogout()">
+        <span>🚪</span><span>Logout</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content" id="main-content">
+    <header class="portal-header">
+      <div class="page-title-area">
+        <div class="page-breadcrumb">Management Portal</div>
+        <div class="page-title" id="page-title">Master Overview</div>
+      </div>
+      <div class="header-actions">
+        <div class="header-search">
+            <span>🔍</span>
+            <input type="text" placeholder="Search property/UID..." />
+        </div>
+        <div class="icon-btn">⚙️</div>
+        <div class="header-avatar" style="background:var(--accent)">A</div>
+      </div>
+    </header>
+
+    <div class="page-body" id="page-body">
+
+      <!-- ===== OVERVIEW PAGE ===== -->
+      <div id="page-overview">
+        <div class="stats-grid">
+          <div class="stat-card blue"><div class="stat-icon">🏢</div><div class="stat-value">124</div><div class="stat-label">Total Hostels</div></div>
+          <div class="stat-card orange"><div class="stat-icon">⏳</div><div class="stat-value" id="stat-pending">8</div><div class="stat-label">Pending Reviews</div></div>
+          <div class="stat-card green"><div class="stat-icon">👥</div><div class="stat-value">1,420</div><div class="stat-label">Total Residents</div></div>
+          <div class="stat-card purple"><div class="stat-icon">📈</div><div class="stat-value">₹4.2L</div><div class="stat-label">Platform Revenue</div></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+            <div class="panel">
+                <div class="panel-header"><div class="panel-title">Recent Property Submissions</div></div>
+                <div class="table-wrap">
+                    <table id="recent-approvals-table">
+                        <thead><tr><th>Owner</th><th>Hostel</th><th>City</th><th>Action</th></tr></thead>
+                        <tbody id="recent-approvals-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-header"><div class="panel-title">Active Support Tickets</div></div>
+                <div class="panel-body" id="active-tickets-list"></div>
+            </div>
+        </div>
+      </div>
+
+      <!-- ===== APPROVALS PAGE ===== -->
+      <div id="page-approvals" style="display:none">
+        <div class="panel">
+            <div class="panel-header"><div class="panel-title">Pending Listings for Review</div></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Date</th><th>Owner</th><th>Hostel Name</th><th>Details</th><th>Actions</th></tr></thead>
+                    <tbody id="pending-hostels-body"></tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+
+      <!-- ===== ALL HOSTELS PAGE ===== -->
+      <div id="page-all-hostels" style="display:none">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">Global Property Master</div>
+                <div class="panel-actions"><input type="text" class="form-input" style="width:200px" placeholder="Filter by Name/ID..." /></div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>UID</th><th>Hostel Name</th><th>Owner</th><th>City</th><th>Residents</th><th>Status</th></tr></thead>
+                    <tbody id="all-hostels-body"></tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+
+      <!-- ===== COMPLAINTS PAGE ===== -->
+      <div id="page-complaints" style="display:none">
+        <div class="panel">
+            <div class="panel-header"><div class="panel-title">Resident Support & Complaints</div></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Ticket #</th><th>Resident</th><th>Hostel</th><th>Subject</th><th>Priority</th><th>Status</th></tr></thead>
+                    <tbody id="complaints-body"></tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="portal-toast" id="portal-toast"></div>
+<script src="admin.js"></script>
+</body>
+</html>
