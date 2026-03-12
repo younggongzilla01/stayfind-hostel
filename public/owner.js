@@ -621,6 +621,13 @@ function switchAuthTab(type) {
 
 // ---- INIT ----
 checkAuth();
+
+// Handle cross-page navigation intents
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('action') === 'register') {
+    switchAuthTab('register');
+}
+
 window.addEventListener('resize', () => {
     if (window.innerWidth > 768) {
         document.getElementById('mobile-overlay').classList.remove('show');
