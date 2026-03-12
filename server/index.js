@@ -4,9 +4,6 @@ const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 
-// Connect Database
-connectDB();
-
 const app = express();
 
 // Middleware
@@ -31,5 +28,8 @@ app.use((req, res, next) => {
     next();
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+// Connect Database and launch server
+connectDB().then(() => {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+});
