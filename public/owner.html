@@ -510,9 +510,13 @@
               </div>
               
               <div class="form-group" style="margin-top:1.5rem">
-                <label class="form-label">Upload Photos</label>
-                <div style="border:2px dashed var(--border);border-radius:var(--radius);padding:2rem;text-align:center;color:var(--text-faint)">
-                    📷 Drag & drop photos here, or <span style="color:var(--primary);cursor:pointer">browse files</span>. (Mocked for Demo)
+                <label class="form-label">Upload Photos (Max 5)</label>
+                <div style="border:2px dashed var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;color:var(--text-faint)">
+                    <input type="file" id="w-photos" multiple accept="image/jpeg, image/png, image/webp" style="display:none" onchange="updatePhotoPreview()" />
+                    <label for="w-photos" style="cursor:pointer;display:block">
+                      📷 <span style="color:var(--primary);text-decoration:underline">Click to browse files</span> or drag & drop.
+                    </label>
+                    <div id="photo-preview-list" style="margin-top:1rem;font-size:0.85rem;color:var(--white);display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center"></div>
                 </div>
               </div>
 

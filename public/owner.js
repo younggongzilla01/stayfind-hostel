@@ -486,6 +486,26 @@ function renderReview() {
     `;
 }
 
+function updatePhotoPreview() {
+    const input = document.getElementById('w-photos');
+    const preview = document.getElementById('photo-preview-list');
+    preview.innerHTML = '';
+    
+    if (input.files && input.files.length > 0) {
+        if(input.files.length > 5) {
+            showToast("Maximum 5 photos allowed", "error");
+            input.value = "";
+            return;
+        }
+        Array.from(input.files).forEach(file => {
+            const chip = document.createElement('div');
+            chip.style.cssText = 'background:rgba(255,255,255,0.1);padding:4px 8px;border-radius:4px;font-size:0.8rem;';
+            chip.innerText = file.name;
+            preview.appendChild(chip);
+        });
+    }
+}
+
 async function submitHostel() {
     // Step 1 Info
     const name = document.getElementById('w-name').value;
@@ -514,8 +534,30 @@ async function submitHostel() {
 
     const rules = document.getElementById('w-rules')?.value || '';
     
-    // We would also gather rooms here, but skipping for brevity in this conversion setup
-    // the backend model defaults rooms to []
+    // Photo Upload Process
+    let uploadedPhotoUrls = [];
+    const photoInput = document.getElementById('w-photos');
+    
+    if (photoInput.files && photoInput.files.length > 0) {
+        showToast("Uploading photos to Cloudinary...", "info");
+        const formData = new FormData();
+        Array.from(photoInput.files).forEach(f => formData.append('photos', f));
+        
+        try {
+            // we use direct fetch because apiFetch assumes JSON
+            const uploadRes = await fetch(`${API_BASE}/owner/upload`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${ownerToken}` },
+                body: formData
+            });
+            const uploadData = await uploadRes.json();
+            if(!uploadRes.ok) throw new Error(uploadData.message || "Upload failed");
+            uploadedPhotoUrls = uploadData.urls;
+        } catch (upErr) {
+            showToast(upErr.message, 'error');
+            return; // halt hostel submission if upload fails
+        }
+    }
 
     try {
         const payload = { 
@@ -524,6 +566,7 @@ async function submitHostel() {
             waterSupply,
             facilities,
             rules,
+            photos: uploadedPhotoUrls,
             status: "Pending"
         };
         const newHostel = await apiFetch('/owner/hostels', 'POST', payload);
